@@ -110,7 +110,7 @@ function serviceHeartbeat (data) {
 
           // Service Registry Lost Service - Reregister
           errorCleanup("Service Registry Lost Service - Reregister");
-          serviceInfo.public.id = undefined;
+          
           return module.exports.registerService();
 
         } else {
@@ -137,6 +137,9 @@ function errorCleanup(error) {
 
     // Log
     if (logit) console.log(error);
+
+    // Clear Id
+    serviceInfo.public.id = undefined;
   
     // Cancel Heartbeat
     clearInterval(serviceInfo.private.heartbeatTimerId);
