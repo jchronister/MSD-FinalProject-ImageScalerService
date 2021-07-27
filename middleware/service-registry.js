@@ -4,7 +4,7 @@ const http = require("http");
 const https = require("https");
 const { sendJSON } = require("./return-object");
 
-const logit = true;
+const logit = false;
 
 const serviceInfo = {
   
@@ -53,9 +53,9 @@ module.exports.registerService = function (res) {
 
   // Poll Service Registry
   request(serviceInfo.public)
-
+  
   .then(response => {
-
+return sendJSON.call(res, null, response)
     if (response.error) {
 
       // Throw if Unsuccessful
@@ -74,7 +74,7 @@ module.exports.registerService = function (res) {
         , serviceInfo.public.heartbeatIntervalms);
 
       // Send Success
-      sendJSON.call(res, null, "Service Registry Started");
+      // sendJSON.call(res, null, "Service Registry Started");
 
     }
 
@@ -85,7 +85,7 @@ module.exports.registerService = function (res) {
     errorCleanup(("registerService: " + (err.message || err)));
   
     // Send Success
-    sendJSON.call(res, err.message || err, null);
+    // sendJSON.call(res, err.message || err, null);
   });
 
 };
