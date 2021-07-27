@@ -13,9 +13,9 @@ const serviceInfo = {
     category: "Image Scaler",
     version: 1,
     description: "Scale Images to Thumbnail", 
-    endpoint: process.env.SERVERIP + ":" + process.env.PORT + "/images", 
+    endpoint: process.env.SERVERIP + "/images", 
     heartbeatIntervalms: 15 * 1000,
-    documentationURL: process.env.SERVERIP + ":" + process.env.PORT,
+    documentationURL: process.env.SERVERIP,
     id: undefined,
   },
   
