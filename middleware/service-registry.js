@@ -55,7 +55,7 @@ module.exports.registerService = function (res) {
   request(serviceInfo.public)
   
   .then(response => {
-return sendJSON.call(res, null, response)
+
     if (response.error) {
 
       // Throw if Unsuccessful
@@ -74,7 +74,7 @@ return sendJSON.call(res, null, response)
         , serviceInfo.public.heartbeatIntervalms);
 
       // Send Success
-      // sendJSON.call(res, null, "Service Registry Started");
+      sendJSON.call(res, null, "Service Registry Started");
 
     }
 
@@ -85,7 +85,7 @@ return sendJSON.call(res, null, response)
     errorCleanup(("registerService: " + (err.message || err)));
   
     // Send Success
-    // sendJSON.call(res, err.message || err, null);
+    sendJSON.call(res, err.message || err, null);
   });
 
 };
