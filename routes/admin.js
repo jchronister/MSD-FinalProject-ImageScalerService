@@ -14,7 +14,17 @@ router.route("/registry/stop")
 
 router.route("/registry/status")
   .get(checkRegistry);
-  
+
+router.route("/registry/evnVar")
+  .get((req, res) => {
+    
+      sendJSON.call(res, null, 
+        {"registry server": process.env.MICROSERVICE_REGISTRY_URL,
+        server: process.env.SERVERIP,
+        port: process.env.PORT
+      });
+    
+  });
 
 /** Register and Start Heartbeat
  * @param {Object} req Request Object
