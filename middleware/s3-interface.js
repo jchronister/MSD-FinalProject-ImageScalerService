@@ -8,8 +8,8 @@ const stream = require('stream');
 //   s3: "2006-03-01",
 // };  
 
-const accessKeyId = 'AKIAX3PR3U34F4A6EJUN';
-const secretAccessKey = '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';  
+const accessKeyId = process.env.S3AccessKey;
+const secretAccessKey = process.env.S3SecretKey;  
 
 // The name of the bucket that you have created
 const Bucket = 'msdfp';
