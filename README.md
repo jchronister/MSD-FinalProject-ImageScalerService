@@ -9,3 +9,7 @@
 * Saves Processed Image in S3
 * Returns Path to S3 Image
 
+### Service Registry
+* Registers Service with Service Registry Server
+* Sends Heartbeats to Registry Server
+
