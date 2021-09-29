@@ -5,7 +5,7 @@ const {registerService, stopService, heartbeatStatus} = require("../middleware/s
 
 const router = require("express")();
 
-// /admin
+// Routes /admin/
 router.route("/registry/start")
   .get(startRegistry);
 

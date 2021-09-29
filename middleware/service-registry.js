@@ -6,6 +6,8 @@ const { sendJSON } = require("./return-object");
 
 const logit = false;
 
+
+// Service Configuration
 const serviceInfo = {
   
   public: {
@@ -195,7 +197,7 @@ function request (data) {
 
 
 
-
+// I could be faster???
 // Stream via Buffer
 // const server = http.createServer((request, response) => {
 //   let data = []

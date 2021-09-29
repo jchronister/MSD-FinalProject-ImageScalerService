@@ -19,35 +19,14 @@ const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-
-// app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
-// View Stream Data
-// app.use(function(req, res, next) {
-//   req.rawBody = '';
-//   req.setEncoding('utf8');
 
-//   req.on('data', function(chunk) { 
-//     console.log( chunk);
-//   });
 
-//   req.on('end', function() {
-//     next();
-//   });
-// });
-
-// Authentication
-// app.use(isValidUser);
-
+// Home Index File
+app.get("/", (res, req) => {fs.createReadStream(path.join(__dirname, "static", "index.html")).pipe(req);});
 
 // Routes
-
-app.get("/", (res, req) => {
-  fs.createReadStream(path.join(__dirname, "static", "index.html")).pipe(req);
-});
-
 app.use("/images", imageScaler);
 app.use("/admin", admin);
 
@@ -64,8 +43,8 @@ app.use(function(err, req, res, next) {// eslint-disable-line no-unused-vars
   if (req.app.get("env") === "development") {
     var msg = err.message || err;
   } else {
-    // msg = "Server Error";
-    msg = err.message || err;
+    err.status = 500;
+    msg = "Server Error";
   }
 
   res.status(err.status || 500).json(getReturnObject(msg, null));
@@ -82,7 +61,7 @@ app.use(function(err, req, res, next) {// eslint-disable-line no-unused-vars
 });
 
 
-
+// Start Server
 app.listen(process.env.PORT || 3000,()=>{
 
   console.log("application is running on port : " + (process.env.PORT || 3000));

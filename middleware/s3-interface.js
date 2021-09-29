@@ -4,19 +4,49 @@ const AWS = require('aws-sdk');
 const fs = require("fs");
 const stream = require('stream');
 
-// aws.config.apiVersions = {
-//   s3: "2006-03-01",
-// };  
 
+// AWS Configuration
+AWS.config.apiVersions = {s3: "2006-03-01"};  
 const accessKeyId = process.env.S3AccessKey;
 const secretAccessKey = process.env.S3SecretKey;  
-
-// The name of the bucket that you have created
-const Bucket = process.env.S3Bucket;
-
+const bucket = process.env.S3Bucket;
 const s3 = new AWS.S3({accessKeyId, secretAccessKey});
 
 
+/** Stream File to S3
+ * @param {stream} stream - Data Stream
+ * @param {string} key - Data Key
+ * @param {object} metadata - Key/Value Metadata
+ * @returns {Promise} Returns Upload Status
+*/
+module.exports.s3StreamUpload = function (stream, key, metadata) {
+  
+  const params = {
+    Bucket: bucket, 
+    Key: key, 
+    Body: stream,
+
+    // Add Metadata if Exists
+    ...(metadata) && {Metadata: metadata},
+  };
+
+  return s3.upload(params).promise();
+
+};
+
+/** Stream File From S3
+ * @param {string} key - Data Key
+ * @returns {stream} Returns Read Stream
+*/
+module.exports.s3StreamDownload = function (key) {
+
+  return s3.getObject({Bucket: bucket, Key: key}).createReadStream();
+
+};
+
+
+
+// Testing
 /** Upload File from Disk to S3
  * @param {string} fileName - File Name
  * @returns {undefined}
@@ -28,7 +58,7 @@ function uploadFile (fileName) {// eslint-disable-line no-unused-vars
 
   // Setting up S3 upload parameters
   const params = {
-      Bucket,
+      Bucket: bucket,
       Key: 'TestFile1.jpg', // File name you want to save as in S3
       Metadata: {user: 'jrc', flagged: 'No'},
       Body: fileContent
@@ -37,18 +67,12 @@ function uploadFile (fileName) {// eslint-disable-line no-unused-vars
   // Uploading files to the bucket
   s3.upload(params, function(err, data) {
 
-      if (err) {
-          throw err;
-      }
+      if (err) {throw err;}
 
       console.log(`File uploaded successfully. ${data.Location}`);
 
   });
 }
-
-
-
-
 
 // Not Working
 /** Upload Stream to S3
@@ -73,53 +97,19 @@ function uploadReadableStream(sourceStream) {// eslint-disable-line no-unused-va
 
 // Not Used Testing Purposes
 /** Stream to S3
- * @param {string} Key - File Key
+ * @param {string} key - File Key
  * @returns {object} steam and S3 upload promise
 */
- module.exports.intermStreamUpload = function (Key) {
+ module.exports.intermStreamUpload = function (key) {
 
     const passStream = new stream.PassThrough();
 
     return {
       writeStream: passStream,
-      promise: s3.upload({ Bucket, Key, Body: passStream }).promise(),
+      promise: s3.upload({ Bucket: bucket, Key: key, Body: passStream }).promise(),
     };
   
   };
-
-
-/** Stream File to S3
- * @param {stream} stream - Data Stream
- * @param {string} Key - Data Key
- * @param {object} metadata - Key/Value Metadata
- * @returns {Promise} Returns Upload Status
-*/
-module.exports.s3StreamUpload = function (stream, Key, metadata) {
-  
-  const params = {
-    Bucket, 
-    Key, 
-    Body: stream,
-
-    // Add Metadata if Exists
-    ...(metadata) && {Metadata: metadata},
-  };
-
-  return s3.upload(params).promise();
-
-};
-
-/** Stream File From S3
- * @param {string} Key - Data Key
- * @returns {stream} Returns Read Stream
-*/
-module.exports.s3StreamDownload = function (Key) {
-
-  return s3.getObject({Bucket, Key}).createReadStream();
-
-};
-
-
 
   
 
