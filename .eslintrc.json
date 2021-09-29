@@ -1,0 +1,29 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+      "strict": ["error", "global"],
+      "semi": ["warn", "always"],
+      "quotes": "off",
+      "no-alert": "off",
+      "no-console": "off",
+      "no-debugger": "off",
+      "no-unused-vars": "warn",
+      "id-length": [2, {"min": 2, "max": 30, "exceptions": ["i","j", "n", "e"]}],
+      "camelcase": [2, {"properties": "always"}],
+      "valid-jsdoc": ["error"],
+      "require-jsdoc": ["error", {
+      "require": { "FunctionDeclaration": true,
+      "MethodDefinition": true,
+      "ClassDeclaration": true,
+      "ArrowFunctionExpression": false,
+      "FunctionExpression": true} }]
+      }
+}
